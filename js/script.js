@@ -213,10 +213,10 @@ const PRODUCTS_PER_PAGE = 10;
 
     Exemplo:
 
-    const TELEGRAM_USERNAME = "DM_2BuyFolders";
+    const TELEGRAM_USERNAME = "pizza_xdelivery";
 */
 
-const TELEGRAM_PHONE = "12899080003";
+const TELEGRAM_PHONE = "6283850089803";
 
 
 let currentPage = 1;
