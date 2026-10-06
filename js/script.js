@@ -295,11 +295,6 @@ const cartItemsContainer =
         ".cart-items"
     );
 
-const cartTotalElement =
-    cartDrawer.querySelector(
-        ".cart-total-row strong"
-    );
-
 const cartPayButton =
     cartDrawer.querySelector(
         ".cart-pay-button"
@@ -353,11 +348,6 @@ const productModalName =
 const productModalDescription =
     productModal.querySelector(
         ".modal-product-description"
-    );
-
-const productModalPrice =
-    productModal.querySelector(
-        ".modal-price"
     );
 
 const productModalPayButton =
@@ -429,11 +419,6 @@ const telegramContinueButton =
 /* =========================
    GENERAL HELPERS
 ========================= */
-
-function formatPrice(price) {
-    return `$${price}`;
-}
-
 
 function saveCart() {
     localStorage.setItem(
@@ -517,11 +502,6 @@ function createProductCard(product) {
 
                 <div class="product-purchase-area">
 
-                    <span class="product-price">
-                        ${formatPrice(product.price)}
-                    </span>
-
-
                     <div class="product-actions">
 
                         <button
@@ -529,7 +509,7 @@ function createProductCard(product) {
                             type="button"
                             data-product-id="${product.id}"
                         >
-                            Pay Now
+                            Buy Now
                         </button>
 
 
@@ -818,15 +798,6 @@ function removeFromCart(productId) {
 }
 
 
-function getCartTotal() {
-    return cart.reduce(
-        (total, product) =>
-            total + product.price,
-        0
-    );
-}
-
-
 function updateCartCount() {
     cartCountElements.forEach(
         element => {
@@ -867,10 +838,6 @@ function renderCartItems() {
                                 ${product.name}
                             </h3>
 
-                            <span>
-                                ${formatPrice(product.price)}
-                            </span>
-
                         </div>
 
 
@@ -892,11 +859,6 @@ function renderCartItems() {
 function updateCart() {
     renderCartItems();
     updateCartCount();
-
-    cartTotalElement.textContent =
-        formatPrice(
-            getCartTotal()
-        );
 
     cartPayButton.disabled =
         cart.length === 0;
@@ -1045,11 +1007,6 @@ function openProductModal(productId) {
     productModalDescription.textContent =
         product.description;
 
-    productModalPrice.textContent =
-        formatPrice(
-            product.price
-        );
-
     productModalVideo.pause();
 
     resetProductModalRatio();
@@ -1153,9 +1110,9 @@ function buildDirectPurchaseMessage(
     paymentMethod
 ) {
     return [
-        "I want access to:",
+        "I want access to this product, how much?",
         "",
-        `${product.name} - ${formatPrice(product.price)}`,
+        product.name,
         "",
         `Payment Option: ${paymentMethod}`
     ].join("\n");
@@ -1165,21 +1122,14 @@ function buildDirectPurchaseMessage(
 function buildCartPurchaseMessage(
     paymentMethod
 ) {
-    const productLines =
-        cart.map(
-            product =>
-                `${product.name} - ${formatPrice(product.price)}`
-        );
-
-    const total =
-        getCartTotal();
+    const productLines = cart.map(
+        product => product.name
+    );
 
     return [
-        "I want access to:",
+        "I want access to these products, how much?",
         "",
         ...productLines,
-        "",
-        `Total to pay: ${formatPrice(total)}`,
         "",
         `Payment Option: ${paymentMethod}`
     ].join("\n");
